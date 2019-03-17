@@ -1,0 +1,20 @@
+// image:https://travis-ci.org/toedter/microservice-60min.svg?branch=master[Build Status, link="https://travis-ci.org/toedter/microservice-60min"]
+// image:http://img.shields.io/badge/license-MIT-blue.svg["MIT", link="http://toedter.mit-license.org"]
+
+= Movies Hypermedia Demo
+
+This is the source code for my conference sessions about using several Hypermedia representations
+like HAL Forms to create a rich REST API with a simple VueJS based frontend. Since the backend
+uses hypermedia, the frontend can be implemented robust and does not need to know so much about the domain.
+
+THis is work in progress, please stay tuned.
+
+== Getting Started
+
+* Make sure Java 8 JDK is installed
+* Open a terminal and invoke "./gradlew build bootrun" (just "gradlew" under Windows)
+* Open a Web browser at http://localhost:8080
+
+== License
+
+MIT, see http://toedter.mit-license.org

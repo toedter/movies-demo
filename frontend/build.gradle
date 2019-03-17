@@ -1,0 +1,30 @@
+plugins {
+    id "com.moowork.node" version "1.2.0"
+}
+
+node {
+    version = '10.15.3'
+    download = true
+    workDir = file("${rootProject.buildDir}/node")
+    nodeModulesDir = file("${project.projectDir}")
+}
+
+task(clean) {
+  doLast {
+    delete "dist"
+  }
+}
+
+task(build) {
+}
+
+yarn.inputs.file new File(projectDir, "package.json")
+yarn.outputs.dir new File(projectDir, "node_modules")
+
+yarn_build.inputs.dir new File(projectDir, "src")
+yarn_build.outputs.dir new File(projectDir, "dist")
+
+yarn_build.dependsOn yarn
+build.dependsOn yarn_build
+
+
