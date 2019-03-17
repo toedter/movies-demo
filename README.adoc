@@ -1,5 +1,5 @@
-// image:https://travis-ci.org/toedter/microservice-60min.svg?branch=master[Build Status, link="https://travis-ci.org/toedter/microservice-60min"]
-// image:http://img.shields.io/badge/license-MIT-blue.svg["MIT", link="http://toedter.mit-license.org"]
+image:https://travis-ci.org/toedter/movies-demo.svg?branch=master[Build Status, link="https://travis-ci.org/toedter/movies-demo"]
+image:http://img.shields.io/badge/license-MIT-blue.svg["MIT", link="http://toedter.mit-license.org"]
 
 = Movies Hypermedia Demo
 
