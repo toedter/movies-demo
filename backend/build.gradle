@@ -37,3 +37,21 @@ dependencies {
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('com.h2database:h2')
 }
+
+task copyWebApp(type: Copy) {
+    from('../frontend/dist') {
+        include '**/*'
+    }
+    into 'build/resources/main/static'
+
+    includeEmptyDirs = false
+}
+
+bootJar {
+    archiveBaseName = 'com.toedter.movie-demo'
+    dependsOn copyWebApp
+}
+
+copyWebApp.dependsOn ':frontend:build'
+build.dependsOn copyWebApp
+
