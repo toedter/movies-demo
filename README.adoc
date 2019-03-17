@@ -7,7 +7,7 @@ This is the source code for my conference sessions about using several Hypermedi
 like HAL Forms to create a rich REST API with a simple VueJS based frontend. Since the backend
 uses hypermedia, the frontend can be implemented robust and does not need to know so much about the domain.
 
-THis is work in progress, please stay tuned.
+This is work in progress, please stay tuned.
 
 == Getting Started
 
