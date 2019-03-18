@@ -27,7 +27,7 @@ class MovieLoader {
             String moviesJson;
             ObjectMapper mapper = new ObjectMapper();
 
-            File file = ResourceUtils.getFile("classpath:static/movie-data/movies-250.json");
+            File file = ResourceUtils.getFile("classpath:static/movie-data/movies-10.json");
 
             moviesJson = readFile(file.getPath(), StandardCharsets.UTF_8);
             JsonNode rootNode = mapper.readValue(moviesJson, JsonNode.class);
