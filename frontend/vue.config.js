@@ -3,13 +3,10 @@ module.exports = {
         proxy: {
             '/movies': {
                 target: 'http://localhost:8080',
-                ws: true,
-                changeOrigin: true
+                changeOrigin: false
             },
             '/movie-data': {
-                target: 'http://localhost:8080',
-                ws: true,
-                changeOrigin: true
+                target: 'http://localhost:8080'
             }
         }
     }
