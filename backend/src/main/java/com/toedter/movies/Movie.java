@@ -15,6 +15,7 @@ public class Movie {
     @Id
     private String id;
     private String title;
+    private String director;
     private long year;
     private double rating;
     private int rank;

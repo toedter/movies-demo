@@ -2,10 +2,10 @@ package com.toedter.movies;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-public class MoviesDemoApplication extends WebMvcConfigurerAdapter {
+public class MoviesDemoApplication implements WebMvcConfigurer {
     public static void main(String... args) {
         // when deployed as a docker container to Heroku
         // Heroku sets the PORT environment variable

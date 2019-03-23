@@ -44,11 +44,12 @@ class MovieLoader {
 
     private void handleMovie(MovieRepository movieRepository, int rank, String id, JsonNode rootNode) {
         String title = rootNode.get("Title").asText();
+        String director = rootNode.get("Director").asText();
         long year = rootNode.get("Year").asLong();
         double imdbRating = rootNode.get("imdbRating").asDouble();
 
         String movieImage = "/movie-data/thumbs/" + id + ".jpg";
-        Movie movie = new Movie(id, title, year, imdbRating, rank, movieImage);
+        Movie movie = new Movie(id, title, director, year, imdbRating, rank, movieImage);
         if (movieRepository != null) {
             movieRepository.save(movie);
         }

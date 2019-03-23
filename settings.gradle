@@ -1,7 +1,7 @@
 include 'frontend'
 include 'backend'
 
-rootProject.name = 'moviews-demo'
+rootProject.name = 'movies-demo'
 rootProject.children.each { project ->
     String fileBaseName = project.name
     String projectDirName = "$fileBaseName"
