@@ -18,10 +18,7 @@ package com.toedter.movies;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,8 +61,10 @@ class MovieController {
         Link selfLink = linkTo(MovieController.class).slash("movies").withSelfRel();
         Link templatedLink = new Link(selfLink.getHref() + "{?size,page}").withSelfRel();
 
-        final CollectionModel<EntityModel<Movie>> entityModels =
-                new CollectionModel<>(movieResources, templatedLink.andAffordance(afford(methodOn(MovieController.class).newMovie(null))));
+        PagedModel.PageMetadata pageMetadata =
+                new PagedModel.PageMetadata(pagedResult.getSize(),pagedResult.getNumber(),pagedResult.getTotalElements(), pagedResult.getTotalPages());
+        final PagedModel<EntityModel<Movie>> entityModels =
+                new PagedModel<>(movieResources, pageMetadata, templatedLink.andAffordance(afford(methodOn(MovieController.class).newMovie(null))));
 
         final Pageable prev = pageRequest.previous();
         if (prev.getPageNumber() < page) {

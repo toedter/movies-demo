@@ -48,8 +48,8 @@
                     </a>
                 </li>
 
-                <li v-for="index in 10">
-                    <a class="page-link" href="#" v-on:click="getMoviesByPage(index)">{{index}}</a>
+                <li v-for="index in page.totalPages" :class="{'page-item':true, 'active':page.number === index-1}">
+                    <a class="page-link" href="#" v-on:click="getMoviesByPage(index-1)">{{index}}</a>
                 </li>
 
                 <li :class="{'page-item':true, 'disabled':!links.next}">
@@ -84,6 +84,7 @@
     export default class Movies extends Vue {
         @Prop() private movies!: any[];
         @Prop() private links!: any;
+        @Prop() private page!: any;
 
         created() {
             this.getMovies("/movies")
@@ -93,6 +94,7 @@
             axios.get(url).then((response: any) => {
                     this.movies = response.data._embedded.movieList;
                     this.links = response.data._links;
+                    this.page = response.data.page;
                 }
             )
         }
