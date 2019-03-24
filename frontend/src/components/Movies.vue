@@ -6,8 +6,8 @@
             <thead>
             <tr>
                 <th style="text-align: left; width:1%;"></th>
-                <th style="text-align: right; width:5%">No</th>
-                <th style="text-align: left; width:40%;">Title</th>
+                <th style="text-align: right; width:1%">No</th>
+                <th style="text-align: left; width:45%;">Title</th>
                 <th style="text-align: left; width:20%;">Director</th>
                 <th style="text-align: left; width:5%;">Year</th>
                 <th style="text-align: left; width:10%;">IMDB Rating</th>

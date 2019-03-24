@@ -62,10 +62,10 @@ class MovieController {
                 .collect(Collectors.toList());
 
         Link selfLink = linkTo(MovieController.class).slash("movies").withSelfRel();
-        Link link = new Link(selfLink.getHref() + "{?size,page}").withSelfRel();
+        Link templatedLink = new Link(selfLink.getHref() + "{?size,page}").withSelfRel();
 
         final CollectionModel<EntityModel<Movie>> entityModels =
-                new CollectionModel<>(movieResources, link.andAffordance(afford(methodOn(MovieController.class).newMovie(null))));
+                new CollectionModel<>(movieResources, templatedLink.andAffordance(afford(methodOn(MovieController.class).newMovie(null))));
 
         final Pageable prev = pageRequest.previous();
         if (prev.getPageNumber() < page) {
@@ -101,7 +101,7 @@ class MovieController {
                 linkTo(methodOn(MovieController.class).findOne(savedMovie.getId())).withSelfRel()
                         .andAffordance(afford(methodOn(MovieController.class).updateMovie(null, savedMovie.getId())))
                         .andAffordance(afford(methodOn(MovieController.class).deleteMovie(savedMovie.getId()))),
-                linkTo(methodOn(MovieController.class).findAll(0, 0)).withRel("movies")).getLink(IanaLinkRelations.SELF)
+                linkTo(methodOn(MovieController.class).findAll(0, 10)).withRel("movies")).getLink(IanaLinkRelations.SELF)
                 .map(Link::getHref) //
                 .map(href -> {
                     try {
