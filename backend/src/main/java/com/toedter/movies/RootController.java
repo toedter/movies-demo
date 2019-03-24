@@ -30,7 +30,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 class RootController {
 
-	@GetMapping("/")
+	@GetMapping("/api")
     ResponseEntity<RepresentationModel> root() {
 
 		RepresentationModel resourceSupport = new RepresentationModel();
