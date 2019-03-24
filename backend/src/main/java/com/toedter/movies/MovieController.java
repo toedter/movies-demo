@@ -54,8 +54,7 @@ class MovieController {
                 .map(movie -> new EntityModel<>(movie,
                         linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel()
                                 .andAffordance(afford(methodOn(MovieController.class).updateMovie(null, movie.getId())))
-                                .andAffordance(afford(methodOn(MovieController.class).deleteMovie(movie.getId()))),
-                        linkTo(methodOn(MovieController.class).findAll(finalPage, finalSize)).withRel("movies")))
+                                .andAffordance(afford(methodOn(MovieController.class).deleteMovie(movie.getId())))))
                 .collect(Collectors.toList());
 
         Link selfLink = linkTo(MovieController.class).slash("movies").withSelfRel();
@@ -100,7 +99,7 @@ class MovieController {
                 linkTo(methodOn(MovieController.class).findOne(savedMovie.getId())).withSelfRel()
                         .andAffordance(afford(methodOn(MovieController.class).updateMovie(null, savedMovie.getId())))
                         .andAffordance(afford(methodOn(MovieController.class).deleteMovie(savedMovie.getId()))),
-                linkTo(methodOn(MovieController.class).findAll(0, 10)).withRel("movies")).getLink(IanaLinkRelations.SELF)
+                getMoviesLink()).getLink(IanaLinkRelations.SELF)
                 .map(Link::getHref) //
                 .map(href -> {
                     try {
@@ -115,15 +114,19 @@ class MovieController {
 
     @GetMapping("/movies/{id}")
     ResponseEntity<EntityModel<Movie>> findOne(@PathVariable String id) {
-
         return repository.findById(id)
                 .map(movie -> new EntityModel<>(movie,
                         linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel()
                                 .andAffordance(afford(methodOn(MovieController.class).updateMovie(null, movie.getId())))
                                 .andAffordance(afford(methodOn(MovieController.class).deleteMovie(movie.getId()))),
-                        linkTo(methodOn(MovieController.class).findAll(0, 10)).withRel("movies")))
+                        getMoviesLink()))
                 .map(ResponseEntity::ok) //
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    private Link getMoviesLink() {
+        Link moviesLink = linkTo(MovieController.class).slash("movies").withSelfRel();
+        return new Link(moviesLink.getHref() + "{?size,page}").withSelfRel();
     }
 
     @PutMapping("/movies/{id}")
@@ -138,7 +141,7 @@ class MovieController {
                 linkTo(methodOn(MovieController.class).findOne(updatedMovie.getId())).withSelfRel()
                         .andAffordance(afford(methodOn(MovieController.class).updateMovie(null, updatedMovie.getId())))
                         .andAffordance(afford(methodOn(MovieController.class).deleteMovie(updatedMovie.getId()))),
-                linkTo(methodOn(MovieController.class).findAll(0, 10)).withRel("movies")).getLink(IanaLinkRelations.SELF)
+                getMoviesLink()).getLink(IanaLinkRelations.SELF)
                 .map(Link::getHref).map(href -> {
                     try {
                         return new URI(href);
