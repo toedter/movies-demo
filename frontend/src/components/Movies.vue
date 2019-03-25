@@ -8,7 +8,7 @@
                 <th style="text-align: left; width:1%;"></th>
                 <th style="text-align: right; width:1%">No</th>
                 <th style="text-align: left; width:45%;">Title</th>
-                <th style="text-align: left; width:20%;">Director</th>
+                <th style="text-align: left; width:20%;">Directed by</th>
                 <th style="text-align: left; width:5%;">Year</th>
                 <th style="text-align: left; width:10%;">IMDB Rating</th>
                 <th style="text-align: right; width:5%;"></th>
@@ -17,7 +17,7 @@
             <tbody>
             <tr v-for="movie in movies">
                 <td style="text-align: left"><a :href="movie.thumb">
-                    <img :src="movie.thumb" height="40" width="30"/></a>
+                    <img :src="movie.thumb" height="50" width="35"/></a>
                 </td>
                 <td style="text-align: right;vertical-align:middle;">{{movie.rank}}</td>
                 <td style="text-align: left;vertical-align:middle;">{{movie.title}}</td>
