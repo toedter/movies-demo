@@ -48,8 +48,8 @@
                     </a>
                 </li>
 
-                <li v-for="index in page.totalPages" :class="{'page-item':true, 'active':page.number === index-1}">
-                    <a class="page-link" href="#" v-on:click="getMoviesByPage(index-1)">{{index}}</a>
+                <li v-for="index in getMaxPage() - getMinPage()" :class="{'page-item':true, 'active':page.number === index-1+getMinPage()}">
+                    <a class="page-link" href="#" v-on:click="getMoviesByPage(index-1+getMinPage())">{{index+getMinPage()}}</a>
                 </li>
 
                 <li :class="{'page-item':true, 'disabled':!links.next}">
@@ -82,9 +82,9 @@
         },
     })
     export default class Movies extends Vue {
-        @Prop() private movies!: any[];
-        @Prop() private links!: any;
-        @Prop() private page!: any;
+        private movies: any[] = [];
+        private links: any = {};
+        private page: any = {};
 
         created() {
             this.getMovies("/movies")
@@ -102,16 +102,26 @@
         private getMoviesByPage(page: number) {
             this.getMovies("/movies?page=" + page);
         }
+
+        private getMinPage(): number {
+            let minPage = 0;
+            if( this.page.number > 5) {
+                minPage = this.page.number - 5;
+            }
+
+            if( this.page.number > this.page.totalPages - 5) {
+                minPage = this.page.totalPages - 10;
+            }
+
+            return minPage;
+        }
+
+        private getMaxPage(): number {
+            return this.getMinPage() + 10;
+        }
     }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    h3 {
-        margin: 40px 0 0;
-    }
-
-    a {
-        color: #42b983;
-    }
 </style>
