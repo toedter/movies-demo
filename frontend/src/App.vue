@@ -9,31 +9,44 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link" >Movies</a>
-            <a class="nav-item nav-link" >Directors</a>
+            <router-link class="nav-item nav-link" to="/movie-page">Movies</router-link>
+            <router-link class="nav-item nav-link" to="/director-page">Directors</router-link>
           </div>
         </div>
       </div>
     </nav>
 
-    <Movies />
+    <router-view class="view"></router-view>
+<!--    <Movies />-->
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Movies from './components/Movies.vue';
-import Vuex from 'vue'
+import Directors from './components/Directors.vue';
 import BootstrapVue from 'bootstrap-vue'
+import VueRouter from 'vue-router'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-Vuex.use(BootstrapVue)
+Vue.use(BootstrapVue)
+Vue.use(VueRouter)
+
+const router = new VueRouter({
+  mode: 'history',
+  routes: [
+    { path: '/', component: Movies },
+    { path: '/movie-page', component: Movies },
+    { path: '/director-page', component: Directors }
+  ]
+})
 
 @Component({
+  router,
   components: {
-    Movies: Movies,
+    Movies
   },
 })
 export default class App extends Vue {}
