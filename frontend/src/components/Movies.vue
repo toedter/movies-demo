@@ -21,7 +21,7 @@
                 </td>
                 <td style="text-align: right;vertical-align:middle;">{{movie.rank}}</td>
                 <td style="text-align: left;vertical-align:middle;">{{movie.title}}</td>
-                <td style="text-align: left;vertical-align:middle;">{{movie.director}}</td>
+                <td style="text-align: left;vertical-align:middle;"><div v-for="director in movie._embedded.directorList">{{director.name}}</div></td>
                 <td style="text-align: left;vertical-align:middle;">{{movie.year}}</td>
                 <td style="text-align: left;vertical-align:middle;">
                     <Rate :value="movie.rating - 1.4" :length="10" :animate="0" :readonly="true" />

@@ -15,6 +15,7 @@
  */
 package com.toedter.movies;
 
+import com.toedter.movies.movie.MovieController;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,8 @@ class RootController {
 
 		resourceSupport.add(linkTo(methodOn(RootController.class).root()).withSelfRel());
 
-		Link selfLink = linkTo(MovieController.class).slash("movies").withRel("movies");
-		Link templatedLink = new Link(selfLink.getHref() + "{?size,page}").withRel("movies");
+		Link selfLink = linkTo(MovieController.class).slash("directors").withRel("directors");
+		Link templatedLink = new Link(selfLink.getHref() + "{?size,page}").withRel("directors");
 
 		resourceSupport.add(templatedLink);
 

@@ -1,7 +1,9 @@
-package com.toedter.movies;
+package com.toedter.movies.movie;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toedter.movies.director.Director;
+import com.toedter.movies.director.DirectorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -14,14 +16,16 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 @Component
 @Slf4j
 class MovieLoader {
 
     @Bean
-    CommandLineRunner init(MovieRepository repository) {
+    CommandLineRunner init(MovieRepository movieRepository, DirectorRepository directorRepository) {
 
         return args -> {
             String moviesJson;
@@ -36,24 +40,40 @@ class MovieLoader {
             int rating = 1;
             Iterator<JsonNode> iterator = movies.iterator();
             while (iterator.hasNext()) {
-                JsonNode movie = iterator.next();
-                handleMovie(repository, rating++, movie.get("imdbID").asText(), movie);
+                JsonNode movieNode = iterator.next();
+                Movie movie = createMovie(rating++, movieNode);
+                movieRepository.save(movie);
+
+                String directors = movieNode.get("Director").asText();
+                List<String> directorList = Arrays.asList(directors.split(","));
+
+                for(String directorName: directorList) {
+                    Director director = directorRepository.findByName(directorName.trim());
+                    if(director == null) {
+                        director = new Director(directorName.trim());
+                    }
+                    log.info("adding movie: " + movie.getTitle() + " to " + directorName.trim());
+                    director.addMovie(movie);
+                    directorRepository.save(director);
+                    movie.addDirector(director);
+                    movieRepository.save(movie);
+                }
             }
         };
     }
 
-    private void handleMovie(MovieRepository movieRepository, int rank, String id, JsonNode rootNode) {
+    private Movie createMovie(int rank, JsonNode rootNode) {
         String title = rootNode.get("Title").asText();
-        String director = rootNode.get("Director").asText();
+        String imdbId = rootNode.get("imdbID").asText();
+
         long year = rootNode.get("Year").asLong();
         double imdbRating = rootNode.get("imdbRating").asDouble();
 
-        String movieImage = "/movie-data/thumbs/" + id + ".jpg";
-        Movie movie = new Movie(id, title, director, year, imdbRating, rank, movieImage);
-        if (movieRepository != null) {
-            movieRepository.save(movie);
-        }
+        String movieImage = "/movie-data/thumbs/" + imdbId + ".jpg";
+        Movie movie = new Movie(imdbId, title, year, imdbRating, rank, movieImage);
+
         log.info("found movie: " + rank + ": " + title + " (" + year + ") " + imdbRating);
+        return movie;
     }
 
     private String readFile(String path, Charset encoding)

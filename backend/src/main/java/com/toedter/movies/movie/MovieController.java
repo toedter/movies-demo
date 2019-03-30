@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.toedter.movies;
+package com.toedter.movies.movie;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +31,7 @@ import java.util.stream.StreamSupport;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
-class MovieController {
+public class MovieController {
 
     private final MovieRepository repository;
 
@@ -40,7 +40,7 @@ class MovieController {
     }
 
     @GetMapping("/movies")
-    ResponseEntity<CollectionModel<EntityModel<Movie>>> findAll(
+    ResponseEntity<CollectionModel<MovieRepresentationModel>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
 
@@ -50,8 +50,8 @@ class MovieController {
 
         final Page<Movie> pagedResult = repository.findAll(pageRequest);
 
-        List<EntityModel<Movie>> movieResources = StreamSupport.stream(pagedResult.spliterator(), false)
-                .map(movie -> new EntityModel<>(movie,
+        List<MovieRepresentationModel> movieResources = StreamSupport.stream(pagedResult.spliterator(), false)
+                .map(movie -> new MovieRepresentationModel(movie,
                         linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel()
                                 .andAffordance(afford(methodOn(MovieController.class).updateMovie(null, movie.getId())))
                                 .andAffordance(afford(methodOn(MovieController.class).deleteMovie(movie.getId())))))
@@ -62,7 +62,7 @@ class MovieController {
 
         PagedModel.PageMetadata pageMetadata =
                 new PagedModel.PageMetadata(pagedResult.getSize(),pagedResult.getNumber(),pagedResult.getTotalElements(), pagedResult.getTotalPages());
-        final PagedModel<EntityModel<Movie>> entityModels =
+        final PagedModel<MovieRepresentationModel> entityModels =
                 new PagedModel<>(movieResources, pageMetadata, templatedLink.andAffordance(afford(methodOn(MovieController.class).newMovie(null))));
 
         final Pageable prev = pageRequest.previous();
@@ -95,7 +95,7 @@ class MovieController {
 
         Movie savedMovie = repository.save(movie);
 
-        return new EntityModel<>(savedMovie,
+        return new MovieRepresentationModel(savedMovie,
                 linkTo(methodOn(MovieController.class).findOne(savedMovie.getId())).withSelfRel()
                         .andAffordance(afford(methodOn(MovieController.class).updateMovie(null, savedMovie.getId())))
                         .andAffordance(afford(methodOn(MovieController.class).deleteMovie(savedMovie.getId()))),
@@ -113,9 +113,9 @@ class MovieController {
     }
 
     @GetMapping("/movies/{id}")
-    ResponseEntity<EntityModel<Movie>> findOne(@PathVariable String id) {
+    public ResponseEntity<MovieRepresentationModel> findOne(@PathVariable Long id) {
         return repository.findById(id)
-                .map(movie -> new EntityModel<>(movie,
+                .map(movie -> new MovieRepresentationModel(movie,
                         linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel()
                                 .andAffordance(afford(methodOn(MovieController.class).updateMovie(null, movie.getId())))
                                 .andAffordance(afford(methodOn(MovieController.class).deleteMovie(movie.getId()))),
@@ -125,19 +125,19 @@ class MovieController {
     }
 
     private Link getMoviesLink() {
-        Link moviesLink = linkTo(MovieController.class).slash("movies").withSelfRel();
+        Link moviesLink = linkTo(MovieController.class).slash("directors").withSelfRel();
         return new Link(moviesLink.getHref() + "{?size,page}").withSelfRel();
     }
 
     @PutMapping("/movies/{id}")
-    ResponseEntity<?> updateMovie(@RequestBody Movie movie, @PathVariable String id) {
+    ResponseEntity<?> updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
 
         Movie movieToUpdate = movie;
         movieToUpdate.setId(id);
 
         Movie updatedMovie = repository.save(movieToUpdate);
 
-        return new EntityModel<>(updatedMovie,
+        return new MovieRepresentationModel(updatedMovie,
                 linkTo(methodOn(MovieController.class).findOne(updatedMovie.getId())).withSelfRel()
                         .andAffordance(afford(methodOn(MovieController.class).updateMovie(null, updatedMovie.getId())))
                         .andAffordance(afford(methodOn(MovieController.class).deleteMovie(updatedMovie.getId()))),
@@ -154,7 +154,7 @@ class MovieController {
     }
 
     @DeleteMapping("/movies/{id}")
-    ResponseEntity<?> deleteMovie(@PathVariable String id) {
+    ResponseEntity<?> deleteMovie(@PathVariable Long id) {
 
         repository.deleteById(id);
 
