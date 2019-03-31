@@ -5,7 +5,7 @@ import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType;
 
 @Configuration
-@EnableHypermediaSupport(type = HypermediaType.HAL)
+@EnableHypermediaSupport(type = HypermediaType.HAL_FORMS)
 class HypermediaConfiguration {
 
 }

@@ -44,9 +44,7 @@ public class MovieController {
             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
 
-        final int finalSize = size;
-        final int finalPage = page;
-        final PageRequest pageRequest = PageRequest.of(finalPage, finalSize);
+        final PageRequest pageRequest = PageRequest.of(page, size);
 
         final Page<Movie> pagedResult = repository.findAll(pageRequest);
 

@@ -8,6 +8,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
@@ -26,11 +27,18 @@ public class MovieRepresentationModel extends EntityModel<Movie> {
     }
 
     private void initializeDirectors(Movie movie) {
-        directors = new CollectionModel<>(
-                movie.getDirectors()
-                        .stream()
-                        .map(director -> new EmbeddedDirectorRepresentationModel(director))
-                        .collect(Collectors.toList()));
+//        directors = new CollectionModel<>(
+//                movie.getDirectors()
+//                        .stream()
+//                        .map(director -> new EmbeddedDirectorRepresentationModel(director))
+//                        .collect(Collectors.toList()));
+
+        final List<EmbeddedDirectorRepresentationModel> directors = movie.getDirectors()
+                .stream()
+                .map(EmbeddedDirectorRepresentationModel::new)
+                .collect(Collectors.toList());
+        movie._embedded.put("directed-by", directors);
+
     }
 
 }
