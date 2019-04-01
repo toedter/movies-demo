@@ -35,7 +35,6 @@ Vue.use(BootstrapVue)
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-  mode: 'history',
   routes: [
     { path: '/', component: Movies },
     { path: '/movie-page', component: Movies },
