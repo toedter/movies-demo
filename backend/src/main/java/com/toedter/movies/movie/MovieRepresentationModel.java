@@ -10,13 +10,16 @@ import org.springframework.hateoas.Link;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Data
 public class MovieRepresentationModel extends EntityModel<Movie> {
     @JsonUnwrapped
     CollectionModel<EmbeddedDirectorRepresentationModel> directors;
 
     public MovieRepresentationModel(Movie movie) {
-        super(movie);
+        super(movie, linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel());
         initializeDirectors(movie);
     }
 

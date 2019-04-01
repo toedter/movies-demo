@@ -1,6 +1,7 @@
 package com.toedter.movies.director;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.toedter.movies.movie.EmbeddedMovieRepresentationModel;
 import com.toedter.movies.movie.Movie;
 import lombok.Data;
 import org.springframework.hateoas.CollectionModel;
@@ -29,7 +30,7 @@ public class DirectorRepresentationModel extends EntityModel<Director> {
         movies = new CollectionModel<>(
                 director.getMovies()
                         .stream()
-                        .map(movie -> new EntityModel<Movie>(movie))
+                        .map(movie -> new EmbeddedMovieRepresentationModel(movie))
                         .collect(Collectors.toList()));
     }
 
