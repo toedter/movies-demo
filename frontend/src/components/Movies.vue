@@ -20,7 +20,8 @@
                     <img :src="movie.thumb" height="50" width="35"/></a>
                 </td>
                 <td style="text-align: right;vertical-align:middle;">{{movie.rank}}</td>
-                <td style="text-align: left;vertical-align:middle;">{{movie.title}}</td>
+                <td style="text-align: left;vertical-align:middle;">
+                    <router-link class="nav-item nav-link" :to="'/movies/' + getMovieId(movie)">{{movie.title}}</router-link></td>
                 <td v-if="!(movie._links.directors instanceof Array)" style="text-align: left;vertical-align:middle;">{{movie._links.directors.name}}</td>
                 <td v-if="movie._links.directors instanceof Array" style="text-align: left;vertical-align:middle;"><div v-for="director in movie._links.directors">{{director.name}}</div></td>
                 <td style="text-align: left;vertical-align:middle;">{{movie.year}}</td>
@@ -98,6 +99,13 @@
                     this.page = response.data.page;
                 }
             )
+        }
+
+        private getMovieId(movie: any) {
+            const selfLink = movie._links.self.href;
+            const id = selfLink.substring(selfLink.lastIndexOf("/") + 1);
+            console.log(id);
+            return id;
         }
 
         private getMoviesByPage(page: number) {

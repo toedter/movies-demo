@@ -30,6 +30,7 @@ import VueRouter from 'vue-router'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import Movie from '@/components/Movie.vue';
 
 Vue.use(BootstrapVue)
 Vue.use(VueRouter)
@@ -38,7 +39,9 @@ const router = new VueRouter({
   routes: [
     { path: '/', component: Movies },
     { path: '/movies', component: Movies },
-    { path: '/directors', component: Directors }
+    { path: '/directors', component: Directors },
+    { path: '/movies/:id', component: Movie, props: true },
+    { path: '/xxx', component: Movie }
   ]
 })
 
@@ -56,7 +59,6 @@ export default class App extends Vue {}
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 </style>

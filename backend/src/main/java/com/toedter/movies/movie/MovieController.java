@@ -115,8 +115,8 @@ public class MovieController {
     }
 
     private Link getMoviesLink() {
-        Link moviesLink = linkTo(MovieController.class).slash("directors").withSelfRel();
-        return new Link(moviesLink.getHref() + "{?size,page}").withSelfRel();
+        Link moviesLink = linkTo(MovieController.class).slash("movies").withRel("movies");
+        return new Link(moviesLink.getHref() + "{?size,page}").withRel("movies");
     }
 
     @PutMapping("/movies/{id}")
