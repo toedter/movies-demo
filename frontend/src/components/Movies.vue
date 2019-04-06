@@ -88,7 +88,7 @@
         private page: any = {};
 
         created() {
-            this.getMovies("/movies")
+            this.getMovies("/api/movies")
         }
 
         private getMovies(url: string) {
@@ -101,7 +101,7 @@
         }
 
         private getMoviesByPage(page: number) {
-            this.getMovies("/movies?page=" + page);
+            this.getMovies("/api/movies?page=" + page);
         }
 
         private getMinPage(): number {

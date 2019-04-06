@@ -71,7 +71,7 @@
         private page: any = {};
 
         created() {
-            this.getDirectors("/directors")
+            this.getDirectors("/api/directors")
         }
 
         private getDirectors(url: string) {
@@ -84,7 +84,7 @@
         }
 
         private getDirectorsByPage(page: number) {
-            this.getDirectors("/directors?page=" + page);
+            this.getDirectors("/api/directors?page=" + page);
         }
 
         private getMinPage(): number {

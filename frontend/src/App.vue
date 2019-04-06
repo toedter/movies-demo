@@ -9,8 +9,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <router-link class="nav-item nav-link" to="/movie-page">Movies</router-link>
-            <router-link class="nav-item nav-link" to="/director-page">Directors</router-link>
+            <router-link class="nav-item nav-link" to="/movies">Movies</router-link>
+            <router-link class="nav-item nav-link" to="/directors">Directors</router-link>
           </div>
         </div>
       </div>
@@ -37,8 +37,8 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   routes: [
     { path: '/', component: Movies },
-    { path: '/movie-page', component: Movies },
-    { path: '/director-page', component: Directors }
+    { path: '/movies', component: Movies },
+    { path: '/directors', component: Directors }
   ]
 })
 
