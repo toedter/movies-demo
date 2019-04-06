@@ -12,7 +12,10 @@
             <tbody>
             <tr v-for="director in directors">
                 <td style="text-align: left;vertical-align:middle;">{{director.name}}</td>
-                <td style="text-align: left;vertical-align:middle;"><div v-for="movie in director._embedded.movieList">{{movie.title}}</div></td>
+                <td v-if="director._links.movies instanceof Array" style="text-align: left;vertical-align:middle;">
+                    <div v-for="movie in director._links.movies">{{movie.title}}</div></td>
+                <td v-if="!(director._links.movies instanceof Array)" style="text-align: left;vertical-align:middle;">
+                    {{director._links.movies.title}}</td>
             </tr>
             </tbody>
         </table>

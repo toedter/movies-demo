@@ -1,37 +1,37 @@
 package com.toedter.movies.director;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.toedter.movies.movie.EmbeddedMovieRepresentationModel;
 import com.toedter.movies.movie.Movie;
+import com.toedter.movies.movie.MovieController;
 import lombok.Data;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Data
 public class DirectorRepresentationModel extends EntityModel<Director> {
-    @JsonUnwrapped
-    CollectionModel<EntityModel<Movie>> movies;
+    private String name;
 
     public DirectorRepresentationModel(Director director) {
         super(director);
-        initializeMovies(director);
+        initialize(director);
     }
 
     public DirectorRepresentationModel(Director director, Link... links) {
-        super(director, Arrays.asList(links));
-        initializeMovies(director);
+        super(director, links);
+        initialize(director);
     }
 
-    private void initializeMovies(Director director) {
-        movies = new CollectionModel<>(
-                director.getMovies()
-                        .stream()
-                        .map(movie -> new EmbeddedMovieRepresentationModel(movie))
-                        .collect(Collectors.toList()));
+    private void initialize(Director director) {
+        this.name = director.getName();
+        for (Movie movie : director.getMovies()) {
+            add(linkTo(methodOn(MovieController.class)
+                    .findOne(movie.getId()))
+                    .withRel("movies")
+                    .withTitle(movie.getTitle()));
+        }
+
     }
 
 }

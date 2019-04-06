@@ -2,10 +2,11 @@ package com.toedter.movies;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
-import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType;
+
+import static org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType.*;
 
 @Configuration
-@EnableHypermediaSupport(type = HypermediaType.HAL)
+// @EnableHypermediaSupport(type = { HAL, HAL_FORMS, UBER, COLLECTION_JSON })
+@EnableHypermediaSupport(type = { HAL_FORMS })
 class HypermediaConfiguration {
-
 }

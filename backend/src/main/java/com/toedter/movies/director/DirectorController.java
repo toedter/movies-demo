@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class DirectorController {
@@ -41,7 +40,7 @@ public class DirectorController {
         final Page<Director> pagedResult = repository.findAll(pageRequest);
 
         List<DirectorRepresentationModel> directorResources = StreamSupport.stream(pagedResult.spliterator(), false)
-                .map(director -> new DirectorRepresentationModel(director, linkTo(methodOn(DirectorController.class).findOne(director.getId())).withSelfRel()))
+                .map(director -> new DirectorRepresentationModel(director))
                 .collect(Collectors.toList());
 
         Link selfLink = linkTo(DirectorController.class).slash("directors").withSelfRel();
@@ -80,7 +79,7 @@ public class DirectorController {
     @GetMapping("/directors/{id}")
     public ResponseEntity<DirectorRepresentationModel> findOne(@PathVariable Long id) {
         return repository.findById(id)
-                .map(director -> new DirectorRepresentationModel(director, linkTo(methodOn(DirectorController.class).findOne(director.getId())).withSelfRel()))
+                .map(director -> new DirectorRepresentationModel(director))
                 .map(ResponseEntity::ok) //
                 .orElse(ResponseEntity.notFound().build());
     }

@@ -21,7 +21,8 @@
                 </td>
                 <td style="text-align: right;vertical-align:middle;">{{movie.rank}}</td>
                 <td style="text-align: left;vertical-align:middle;">{{movie.title}}</td>
-                <td style="text-align: left;vertical-align:middle;"><div v-for="director in movie._embedded.directorList">{{director.name}}</div></td>
+                <td v-if="!(movie._links.directors instanceof Array)" style="text-align: left;vertical-align:middle;">{{movie._links.directors.name}}</td>
+                <td v-if="movie._links.directors instanceof Array" style="text-align: left;vertical-align:middle;"><div v-for="director in movie._links.directors">{{director.name}}</div></td>
                 <td style="text-align: left;vertical-align:middle;">{{movie.year}}</td>
                 <td style="text-align: left;vertical-align:middle;">
                     <Rate :value="movie.rating - 1.4" :length="10" :animate="0" :readonly="true" />
