@@ -12,14 +12,13 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-
 public class Movie {
     @Id @GeneratedValue @JsonIgnore
     private Long id;
 
-    private String imdbId;
     private String title;
     private long year;
+    private String imdbId;
     private double rating;
     private int rank;
     private String thumb;
@@ -35,6 +34,11 @@ public class Movie {
         this.rating = rating;
         this.rank = rank;
         this.thumb = thumb;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie: " + this.title;
     }
 
     public void addDirector(Director director) {

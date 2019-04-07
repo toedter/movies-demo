@@ -4,7 +4,7 @@
         <h4 align="left">Movie</h4>
         <form>
             <div class="form-group row" v-for="property in properties">
-                <label class="col-sm-2 col-form-label" for="title">{{property.name}}</label>
+                <label class="col-sm-2 col-form-label" for="title">{{property.prompt}}</label>
                 <div class="col-sm-10">
                     <div class="form-control" id="title">{{movie[property.name]}}</div>
                 </div>
