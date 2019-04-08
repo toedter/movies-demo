@@ -26,7 +26,17 @@ class MovieModelAssembler {
 
         final Affordance updateAffordance =
                 afford(methodOn(MovieController.class).updateMovie(null, movie.getId()));
-        AffordanceModel affordanceModel = updateAffordance.getAffordanceModel(MediaTypes.HAL_FORMS_JSON);
+        addAffordancePrompts(updateAffordance);
+
+        return new MovieRepresentationModel(movie,
+                linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel()
+                        .andAffordance(updateAffordance)
+                        .andAffordance(afford(methodOn(MovieController.class).deleteMovie(movie.getId()))),
+                templatedMoviesLink);
+    }
+
+    public void addAffordancePrompts(Affordance affordance) {
+        AffordanceModel affordanceModel = affordance.getAffordanceModel(MediaTypes.HAL_FORMS_JSON);
 
         try {
             Method method = affordanceModel.getClass().getDeclaredMethod("getInputProperties");
@@ -50,11 +60,5 @@ class MovieModelAssembler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return new MovieRepresentationModel(movie,
-                linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel()
-                        .andAffordance(updateAffordance)
-                        .andAffordance(afford(methodOn(MovieController.class).deleteMovie(movie.getId()))),
-                templatedMoviesLink);
     }
 }

@@ -4,10 +4,7 @@ import com.toedter.movies.RootController;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,18 +41,20 @@ public class MovieController {
 
         List<MovieRepresentationModel> movieResources = StreamSupport.stream(pagedResult.spliterator(), false)
                 .map(movie -> new MovieRepresentationModel(movie,
-                        linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel()
-                                .andAffordance(afford(methodOn(MovieController.class).updateMovie(null, movie.getId())))
-                                .andAffordance(afford(methodOn(MovieController.class).deleteMovie(movie.getId())))))
+                        linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel()))
                 .collect(Collectors.toList());
 
         Link selfLink = linkTo(MovieController.class).slash("movies").withSelfRel();
         Link templatedLink = new Link(selfLink.getHref() + "{?size,page}").withSelfRel();
 
+        final Affordance newMovieAffordance =
+                afford(methodOn(MovieController.class).newMovie(null));
+        movieModelAssembler.addAffordancePrompts(newMovieAffordance);
+
         PagedModel.PageMetadata pageMetadata =
                 new PagedModel.PageMetadata(pagedResult.getSize(), pagedResult.getNumber(), pagedResult.getTotalElements(), pagedResult.getTotalPages());
         final PagedModel<MovieRepresentationModel> entityModels =
-                new PagedModel<>(movieResources, pageMetadata, templatedLink.andAffordance(afford(methodOn(MovieController.class).newMovie(null))));
+                new PagedModel<>(movieResources, pageMetadata, templatedLink.andAffordance(newMovieAffordance));
 
         final Pageable prev = pageRequest.previous();
         if (prev.getPageNumber() < page) {
