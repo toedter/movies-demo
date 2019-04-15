@@ -1,10 +1,7 @@
 package com.toedter.movies.movie;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.hateoas.Affordance;
-import org.springframework.hateoas.AffordanceModel;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.*;
 import org.springframework.hateoas.mediatype.hal.forms.HalFormsProperty;
 import org.springframework.stereotype.Component;
 
@@ -21,8 +18,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 class MovieModelAssembler {
 
     public MovieRepresentationModel toModel(Movie movie) {
-        Link moviesLink = linkTo(MovieController.class).slash("movies").withRel("movies");
-        Link templatedMoviesLink = new Link(moviesLink.getHref() + "{?size,page}").withRel("movies");
+        // Link moviesLink = linkTo(MovieController.class).slash("movies").withRel("movies");
+        //Link templatedMoviesLink = new Link(moviesLink.getHref() + "{?size,page}").withRel("movies");
+
+        final UriTemplate template =
+                UriTemplate.of(linkTo(methodOn(MovieController.class).findAll(0,0)).toString())
+                .with("page", TemplateVariable.VariableType.REQUEST_PARAM)
+                .with("size", TemplateVariable.VariableType.REQUEST_PARAM);
+        Link templatedMoviesLink = new Link(template.toString()).withRel("movies");
 
         final Affordance updateAffordance =
                 afford(methodOn(MovieController.class).updateMovie(null, movie.getId()));

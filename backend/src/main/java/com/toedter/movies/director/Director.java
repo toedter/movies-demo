@@ -1,6 +1,5 @@
 package com.toedter.movies.director;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.toedter.movies.movie.Movie;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,11 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Director {
-    @Id @GeneratedValue @JsonIgnore
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     List<Movie> movies = new ArrayList<>();
 
@@ -30,5 +29,4 @@ public class Director {
     public void addMovie(Movie movie) {
         this.movies.add(movie);
     }
-
 }
