@@ -103,9 +103,7 @@
 
         private getMovieId(movie: any) {
             const selfLink = movie._links.self.href;
-            const id = selfLink.substring(selfLink.lastIndexOf("/") + 1);
-            console.log(id);
-            return id;
+            return selfLink.substring(selfLink.lastIndexOf("/") + 1);
         }
 
         private getMoviesByPage(page: number) {

@@ -13,9 +13,18 @@
             <tr v-for="director in directors">
                 <td style="text-align: left;vertical-align:middle;">{{director.name}}</td>
                 <td v-if="director._links.movies instanceof Array" style="text-align: left;vertical-align:middle;">
-                    <div v-for="movie in director._links.movies">{{movie.title}}</div></td>
+                    <div v-for="movie in director._links.movies">
+                        <router-link class="nav-item nav-link" :to="'/movies/' + getMovieId(movie.href)">
+                            {{movie.title}}
+                        </router-link>
+                    </div>
+                </td>
                 <td v-if="!(director._links.movies instanceof Array)" style="text-align: left;vertical-align:middle;">
-                    {{director._links.movies.title}}</td>
+                    <router-link class="nav-item nav-link" :to="'/movies/' + getMovieId(movie.href)">
+                        {{director._links.movies.title}}
+                    </router-link>
+
+                </td>
             </tr>
             </tbody>
         </table>
@@ -76,11 +85,15 @@
 
         private getDirectors(url: string) {
             axios.get(url).then((response: any) => {
-                    this.directors = response.data._embedded.directorList;
+                    this.directors = response.data._embedded.directorRepresentationModelList;
                     this.links = response.data._links;
                     this.page = response.data.page;
                 }
             )
+        }
+
+        private getMovieId(href: string) {
+            return href.substring(href.lastIndexOf("/") + 1);
         }
 
         private getDirectorsByPage(page: number) {
