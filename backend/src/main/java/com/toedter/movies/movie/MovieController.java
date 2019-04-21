@@ -1,6 +1,7 @@
 package com.toedter.movies.movie;
 
 import com.toedter.movies.RootController;
+import com.toedter.movies.director.Director;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -137,8 +139,14 @@ public class MovieController {
 
     @DeleteMapping("/movies/{id}")
     ResponseEntity<?> deleteMovie(@PathVariable Long id) {
-
-        repository.deleteById(id);
+        Optional<Movie> optional = repository.findById(id);
+        if(optional.isPresent()) {
+            Movie movie = optional.get();
+            for(Director director: movie.getDirectors()) {
+                director.deleteMovie(movie);
+            }
+            repository.deleteById(id);
+        }
 
         return ResponseEntity.noContent().build();
     }

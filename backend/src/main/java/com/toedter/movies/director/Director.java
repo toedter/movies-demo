@@ -20,7 +20,7 @@ public class Director {
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    List<Movie> movies = new ArrayList<>();
+    private List<Movie> movies = new ArrayList<>();
 
     public Director(String name) {
         this.name = name;
@@ -28,5 +28,9 @@ public class Director {
 
     public void addMovie(Movie movie) {
         this.movies.add(movie);
+    }
+
+    public void deleteMovie(Movie movie) {
+        this.movies.remove(movie);
     }
 }

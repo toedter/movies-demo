@@ -22,19 +22,23 @@ class MovieModelAssembler {
         //Link templatedMoviesLink = new Link(moviesLink.getHref() + "{?size,page}").withRel("movies");
 
         final UriTemplate template =
-                UriTemplate.of(linkTo(methodOn(MovieController.class).findAll(0,0)).toString())
-                .with("page", TemplateVariable.VariableType.REQUEST_PARAM)
-                .with("size", TemplateVariable.VariableType.REQUEST_PARAM);
+                UriTemplate.of(linkTo(methodOn(MovieController.class).findAll(0, 0)).toString())
+                        .with("page", TemplateVariable.VariableType.REQUEST_PARAM)
+                        .with("size", TemplateVariable.VariableType.REQUEST_PARAM);
         Link templatedMoviesLink = new Link(template.toString()).withRel("movies");
+
+        Link selfLink = linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel();
 
         final Affordance updateAffordance =
                 afford(methodOn(MovieController.class).updateMovie(null, movie.getId()));
         addAffordancePrompts(updateAffordance);
 
-        return new MovieRepresentationModel(movie,
-                linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel()
-                        .andAffordance(updateAffordance)
-                        .andAffordance(afford(methodOn(MovieController.class).deleteMovie(movie.getId()))),
+        final Affordance deleteAffordance =
+                afford(methodOn(MovieController.class).deleteMovie(movie.getId()));
+
+        return new MovieRepresentationModel(movie, selfLink
+                .andAffordance(updateAffordance)
+                .andAffordance(deleteAffordance),
                 templatedMoviesLink);
     }
 
