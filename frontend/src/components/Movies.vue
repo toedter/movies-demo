@@ -88,17 +88,31 @@
         private links: any = {};
         private page: any = {};
 
+        private moviesHref = '';
+
         created() {
-            this.getMovies("/api/movies")
+            this.getMovies();
         }
 
-        private getMovies(url: string) {
-            axios.get(url).then((response: any) => {
-                    this.movies = response.data._embedded.movies;
-                    this.links = response.data._links;
-                    this.page = response.data.page;
+        private getMovies(url?: string) {
+            if(this.moviesHref.length === 0) {
+                axios.get('/api').then((response: any) => {
+                        const moviesHref: string = response.data._links.movies.href;
+                        this.moviesHref = moviesHref.substring(0, moviesHref.indexOf('{'));
+                        this.getMovies(url);
+                     }
+                )
+            } else {
+                if(!url) {
+                    url = this.moviesHref;
                 }
-            )
+                axios.get(url).then((response: any) => {
+                        this.movies = response.data._embedded.movies;
+                        this.links = response.data._links;
+                        this.page = response.data.page;
+                    }
+                )
+            }
         }
 
         private getMovieId(movie: any) {
@@ -107,7 +121,7 @@
         }
 
         private getMoviesByPage(page: number) {
-            this.getMovies("/api/movies?page=" + page);
+            this.getMovies(this.moviesHref + '?page=' + page);
         }
 
         private getMinPage(): number {

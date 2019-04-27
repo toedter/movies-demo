@@ -20,7 +20,7 @@
                     </div>
                 </td>
                 <td v-if="!(director._links.movies instanceof Array)" style="text-align: left;vertical-align:middle;">
-                    <router-link class="nav-item nav-link" :to="'/movies/' + getMovieId(movie.href)">
+                    <router-link class="nav-item nav-link" :to="'/movies/' + getMovieId(director._links.movies.href)">
                         {{director._links.movies.title}}
                     </router-link>
 
@@ -79,17 +79,31 @@
         private links: any = {};
         private page: any = {};
 
+        private directorsHref = '';
+
         created() {
-            this.getDirectors("/api/directors")
+            this.getDirectors();
         }
 
-        private getDirectors(url: string) {
-            axios.get(url).then((response: any) => {
-                    this.directors = response.data._embedded.directors;
-                    this.links = response.data._links;
-                    this.page = response.data.page;
+        private getDirectors(url?: string) {
+            if(this.directorsHref.length === 0) {
+                axios.get('/api').then((response: any) => {
+                        const directorsHref: string = response.data._links.directors.href;
+                        this.directorsHref = directorsHref.substring(0, directorsHref.indexOf('{'));
+                        this.getDirectors(url);
+                    }
+                )
+            } else {
+                if (!url) {
+                    url = this.directorsHref;
                 }
-            )
+                axios.get(url).then((response: any) => {
+                        this.directors = response.data._embedded.directors;
+                        this.links = response.data._links;
+                        this.page = response.data.page;
+                    }
+                )
+            }
         }
 
         private getMovieId(href: string) {
@@ -97,7 +111,7 @@
         }
 
         private getDirectorsByPage(page: number) {
-            this.getDirectors("/api/directors?page=" + page);
+            this.getDirectors(this.directorsHref + '?page=' + page);
         }
 
         private getMinPage(): number {
