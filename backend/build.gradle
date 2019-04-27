@@ -34,8 +34,8 @@ dependencies {
     implementation('org.springframework.hateoas:spring-hateoas:1.0.0.BUILD-SNAPSHOT')
     implementation('org.springframework.plugin:spring-plugin-core:2.0.0.BUILD-SNAPSHOT')
     
-    compileOnly('org.projectlombok:lombok:1.16.20')
-    annotationProcessor('org.projectlombok:lombok:1.16.20')
+    compileOnly('org.projectlombok:lombok:1.18.6')
+    annotationProcessor('org.projectlombok:lombok:1.18.6')
 
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('com.h2database:h2')
