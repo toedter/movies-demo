@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.toedter.movies.director.Director;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.server.core.Relation;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@Relation(collectionRelation = "movies")
 public class Movie {
     @Id @GeneratedValue @JsonIgnore
     private Long id;

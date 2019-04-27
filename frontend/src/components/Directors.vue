@@ -85,7 +85,7 @@
 
         private getDirectors(url: string) {
             axios.get(url).then((response: any) => {
-                    this.directors = response.data._embedded.directorRepresentationModelList;
+                    this.directors = response.data._embedded.directors;
                     this.links = response.data._links;
                     this.page = response.data.page;
                 }

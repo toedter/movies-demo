@@ -47,32 +47,33 @@ public class DirectorController {
 
         PagedModel.PageMetadata pageMetadata =
                 new PagedModel.PageMetadata(pagedResult.getSize(), pagedResult.getNumber(), pagedResult.getTotalElements(), pagedResult.getTotalPages());
-        final PagedModel<DirectorRepresentationModel> entityModels =
+        final PagedModel<DirectorRepresentationModel> pagedModel =
                 new PagedModel<>(directorResources, pageMetadata);
+
 
         final Pageable prev = pageRequest.previous();
         if (prev.getPageNumber() < page) {
             Link prevLink = new Link(selfLink.getHref() + "?page=" + prev.getPageNumber() + "&size=" + prev.getPageSize()).withRel(IanaLinkRelations.PREV);
-            entityModels.add(prevLink);
+            pagedModel.add(prevLink);
         }
 
         final Pageable next = pageRequest.next();
         if (next.getPageNumber() > page && next.getPageNumber() < pagedResult.getTotalPages()) {
             Link nextLink = new Link(selfLink.getHref() + "?page=" + next.getPageNumber() + "&size=" + next.getPageSize()).withRel(IanaLinkRelations.NEXT);
-            entityModels.add(nextLink);
+            pagedModel.add(nextLink);
         }
 
         if (page > 0) {
             Link firstLink = new Link(selfLink.getHref() + "?page=0&size=" + size).withRel(IanaLinkRelations.FIRST);
-            entityModels.add(firstLink);
+            pagedModel.add(firstLink);
         }
 
         if (page < pagedResult.getTotalPages() - 1) {
             Link lastLink = new Link(selfLink.getHref() + "?page=" + (pagedResult.getTotalPages() - 1) + "&size=" + size).withRel(IanaLinkRelations.LAST);
-            entityModels.add(lastLink);
+            pagedModel.add(lastLink);
         }
 
-        return ResponseEntity.ok(entityModels);
+        return ResponseEntity.ok(pagedModel);
     }
 
     @GetMapping("/directors/{id}")

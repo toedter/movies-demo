@@ -94,7 +94,7 @@
 
         private getMovies(url: string) {
             axios.get(url).then((response: any) => {
-                    this.movies = response.data._embedded.movieList;
+                    this.movies = response.data._embedded.movies;
                     this.links = response.data._links;
                     this.page = response.data.page;
                 }

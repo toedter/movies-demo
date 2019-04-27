@@ -4,11 +4,13 @@ import com.toedter.movies.movie.Movie;
 import com.toedter.movies.movie.MovieController;
 import lombok.Data;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Data
+@Relation(collectionRelation = "directors")
 public class DirectorRepresentationModel extends RepresentationModel<DirectorRepresentationModel> {
     private String name;
 
