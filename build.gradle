@@ -1,5 +1,17 @@
+plugins {
+    id 'org.ajoberstar.grgit' version '2.2.0'
+}
+
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'eclipse'
     group = 'com.toedter'
+}
+
+task cloneHalExplorer {
+    description = 'Clones HAL Explorer'
+    doLast {
+        grgit.clone(dir: "$rootDir/hal-explorer/", uri: 'https://github.com/toedter/hal-explorer.git')
+        grgit.close()
+    }
 }

@@ -11,6 +11,7 @@
           <div class="navbar-nav">
             <router-link class="nav-item nav-link" to="/movies">Movies</router-link>
             <router-link class="nav-item nav-link" to="/directors">Directors</router-link>
+            <a class="nav-item nav-link" href="/hal-explorer/index.html#theme=Cosmo&layout=2&url=/api/">HAL Explorer</a>
           </div>
         </div>
       </div>
@@ -40,8 +41,7 @@ const router = new VueRouter({
     { path: '/', component: Movies },
     { path: '/movies', component: Movies },
     { path: '/directors', component: Directors },
-    { path: '/movies/:id', component: Movie, props: true },
-    { path: '/xxx', component: Movie }
+    { path: '/movies/:id', component: Movie, props: true }
   ]
 })
 

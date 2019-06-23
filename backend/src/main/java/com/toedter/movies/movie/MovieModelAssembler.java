@@ -19,7 +19,7 @@ class MovieModelAssembler {
 
     public MovieRepresentationModel toModel(Movie movie) {
         // Link moviesLink = linkTo(MovieController.class).slash("movies").withRel("movies");
-        //Link templatedMoviesLink = new Link(moviesLink.getHref() + "{?size,page}").withRel("movies");
+        // Link templatedMoviesLink = new Link(moviesLink.getHref() + "{?size,page}").withRel("movies");
 
         final UriTemplate template =
                 UriTemplate.of(linkTo(methodOn(MovieController.class).findAll(0, 0)).toString())

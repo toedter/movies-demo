@@ -11,6 +11,8 @@ services:
 install: true
 
 script:
+  - ./gradlew cloneHalExplorer
+  - ./gradlew -p hal-explorer build
   - ./gradlew build
 
   - docker build -t kaitoedter/movies-demo backend/build

@@ -50,9 +50,15 @@ task copyWebApp(type: Copy) {
     includeEmptyDirs = false
 }
 
+task copyHalExplorer(type: Copy) {
+    from "$projectDir/../hal-explorer/dist"
+    into "$buildDir/resources/main/static/hal-explorer"
+}
+
 bootJar {
     archiveBaseName = 'com.toedter.movies-demo'
     dependsOn copyWebApp
+    dependsOn copyHalExplorer
 }
 
 copyWebApp.dependsOn ':frontend:build'
