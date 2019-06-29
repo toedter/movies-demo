@@ -26,9 +26,9 @@ script:
   - docker push registry.heroku.com/hypermedia-movies-demo/web
   - ./heroku-container-release.sh
 
-cache:
-  directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.sonar/cache'
-    - '$HOME/.gradle'
-    - '.gradle'
+#cache:
+#  directories:
+#    - '$HOME/.m2/repository'
+#    - '$HOME/.sonar/cache'
+#    - '$HOME/.gradle'
+#    - '.gradle'
