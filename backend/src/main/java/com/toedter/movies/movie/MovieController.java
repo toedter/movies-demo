@@ -51,7 +51,6 @@ public class MovieController {
 
         final Affordance newMovieAffordance =
                 afford(methodOn(MovieController.class).newMovie(null));
-        movieModelAssembler.addAffordancePrompts(newMovieAffordance);
 
         PagedModel.PageMetadata pageMetadata =
                 new PagedModel.PageMetadata(pagedResult.getSize(), pagedResult.getNumber(), pagedResult.getTotalElements(), pagedResult.getTotalPages());
