@@ -19,11 +19,15 @@ class MovieModelAssembler {
         final Affordance updateAffordance =
                 afford(methodOn(MovieController.class).updateMovie(movie, movie.getId()));
 
+        final Affordance updatePartiallyAffordance =
+                afford(methodOn(MovieController.class).updateMoviePartially(movie, movie.getId()));
+
         final Affordance deleteAffordance =
                 afford(methodOn(MovieController.class).deleteMovie(movie.getId()));
 
         return new MovieRepresentationModel(movie, selfLink
                 .andAffordance(updateAffordance)
+                .andAffordance(updatePartiallyAffordance)
                 .andAffordance(deleteAffordance),
                 templatedMoviesLink);
     }

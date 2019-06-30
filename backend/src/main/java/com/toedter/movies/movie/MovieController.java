@@ -136,6 +136,28 @@ public class MovieController {
                 .orElse(ResponseEntity.badRequest().body("Unable to update " + movieToUpdate));
     }
 
+    @PatchMapping("/movies/{id}")
+    ResponseEntity<?> updateMoviePartially(@RequestBody Movie movie, @PathVariable Long id) {
+
+        Movie movieToUpdate = movie;
+        movieToUpdate.setId(id);
+
+        repository.save(movieToUpdate);
+        MovieRepresentationModel movieRepresentationModel = movieModelAssembler.toModel(movie);
+
+        return movieRepresentationModel
+                .getLink(IanaLinkRelations.SELF)
+                .map(Link::getHref).map(href -> {
+                    try {
+                        return new URI(href);
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
+                }) //
+                .map(uri -> ResponseEntity.noContent().location(uri).build()) //
+                .orElse(ResponseEntity.badRequest().body("Unable to update " + movieToUpdate + " partially"));
+    }
+
     @DeleteMapping("/movies/{id}")
     ResponseEntity<?> deleteMovie(@PathVariable Long id) {
         Optional<Movie> optional = repository.findById(id);
