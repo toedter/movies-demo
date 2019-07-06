@@ -1,5 +1,6 @@
 package com.toedter.movies.movie;
 
+import com.toedter.movies.RootController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Affordance;
 import org.springframework.hateoas.Link;
@@ -14,7 +15,9 @@ class MovieModelAssembler {
 
     public MovieRepresentationModel toModel(Movie movie) {
         Link selfLink = linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel();
-        Link templatedMoviesLink = new Link(selfLink.getHref() + "{?size,page}").withRel("movies");
+
+        Link moviesLink = linkTo(MovieController.class).slash("movies").withRel("movies");
+        Link templatedMoviesLink = new Link(moviesLink.getHref() + "{?size,page}").withRel("movies");
 
         final Affordance updateAffordance =
                 afford(methodOn(MovieController.class).updateMovie(movie, movie.getId()));
