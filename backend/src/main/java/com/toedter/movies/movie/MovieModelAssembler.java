@@ -1,13 +1,11 @@
 package com.toedter.movies.movie;
 
-import com.toedter.movies.RootController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Affordance;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
 
 @Component
 @Slf4j
