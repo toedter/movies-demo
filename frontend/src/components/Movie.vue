@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <br/>
-        <h4 align="left">Movie</h4>
         <b-form @submit="onUpdate">
             <img :src="movie.thumb" height="320" class="float-left">
             <div class="form-group row" v-for="property in properties">
@@ -10,8 +9,8 @@
                     <b-form-input class="form-control" id="title" v-model="movie[property.name]"></b-form-input>
                 </div>
             </div>
-            <button v-if="showUpdate" type="submit" class="btn btn-primary btn-space">Update</button>
-            <button v-if="showDelete" type="submit" class="btn btn-danger" @click.prevent="onDelete">Delete</button>
+            <button v-if="showUpdate" type="submit" class="btn btn-primary btn-space">{{templates.default.title}}</button>
+            <button v-if="showDelete" type="submit" class="btn btn-danger" @click.prevent="onDelete">{{templates.deleteMovie.title}}</button>
         </b-form>
     </div>
 </template>
@@ -25,6 +24,7 @@
         private movie: any = {};
         private links: any = {};
         private properties: any[] = [];
+        private templates: any[] = [];
         private uri = "";
         private showUpdate = false;
         private showDelete = false;
@@ -43,6 +43,7 @@
                     this.movie = data;
                     this.links = data._links;
                     if (data._templates) {
+                        this.templates = data._templates;
                         this.properties = data._templates.default.properties;
                         if (data._templates.default) {
                             this.showUpdate = true;
