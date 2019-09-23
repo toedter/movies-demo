@@ -46,4 +46,26 @@ public class Movie {
     public void addDirector(Director director) {
         directors.add(director);
     }
+
+    public void update(Movie updatedMovie) {
+        if(updatedMovie.title != null) {
+            this.title = updatedMovie.title;
+        }
+        if(updatedMovie.thumb != null) {
+            this.thumb = updatedMovie.thumb;
+        }
+        if(updatedMovie.imdbId != null) {
+            this.imdbId = updatedMovie.imdbId;
+        }
+        if(updatedMovie.year != 0) {
+            this.year = updatedMovie.year;
+        }
+        if(updatedMovie.rating != 0) {
+            this.rating = updatedMovie.rating;
+        }
+        if(updatedMovie.rank != 0) {
+            this.rank = updatedMovie.rank;
+        }
+
+    }
 }

@@ -31,3 +31,7 @@ node_modules
 bin
 /backup/
 /hal-explorer/
+
+# Project exclude paths
+/backend/out/
+/backend/out/production/classes/

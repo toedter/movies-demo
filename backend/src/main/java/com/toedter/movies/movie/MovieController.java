@@ -9,6 +9,7 @@ import org.springframework.hateoas.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -139,11 +140,11 @@ public class MovieController {
     @PatchMapping("/movies/{id}")
     ResponseEntity<?> updateMoviePartially(@RequestBody Movie movie, @PathVariable Long id) {
 
-        Movie movieToUpdate = movie;
-        movieToUpdate.setId(id);
+        Movie existingMovie = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
+        existingMovie.update(movie);
 
-        repository.save(movieToUpdate);
-        MovieRepresentationModel movieRepresentationModel = movieModelAssembler.toModel(movie);
+        repository.save(existingMovie);
+        MovieRepresentationModel movieRepresentationModel = movieModelAssembler.toModel(existingMovie);
 
         return movieRepresentationModel
                 .getLink(IanaLinkRelations.SELF)
@@ -155,7 +156,7 @@ public class MovieController {
                     }
                 }) //
                 .map(uri -> ResponseEntity.noContent().location(uri).build()) //
-                .orElse(ResponseEntity.badRequest().body("Unable to update " + movieToUpdate + " partially"));
+                .orElse(ResponseEntity.badRequest().body("Unable to update " + existingMovie + " partially"));
     }
 
     @DeleteMapping("/movies/{id}")
