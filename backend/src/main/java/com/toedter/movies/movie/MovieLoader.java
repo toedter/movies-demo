@@ -72,7 +72,7 @@ class MovieLoader {
         String movieImage = "/movie-data/thumbs/" + imdbId + ".jpg";
         Movie movie = new Movie(imdbId, title, year, imdbRating, rank, movieImage);
 
-        log.info("found movie: " + rank + ": " + title + " (" + year + ") " + imdbRating);
+        // log.info("found movie: " + rank + ": " + title + " (" + year + ") " + imdbRating);
         return movie;
     }
 
