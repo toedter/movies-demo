@@ -49,7 +49,7 @@ task copyWebApp(type: Copy) {
 }
 
 task copyHalExplorer(type: Copy) {
-    from "$projectDir/../hal-explorer/dist"
+    from "$projectDir/../hal-explorer/dist/hal-explorer"
     into "$buildDir/resources/main/static/hal-explorer"
 }
 
