@@ -6,6 +6,7 @@ buildscript {
         mavenCentral()
         maven { url "https://repo.spring.io/snapshot" }
         maven { url "https://repo.spring.io/milestone" }
+
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -16,6 +17,7 @@ repositories {
     mavenCentral()
     maven { url "https://repo.spring.io/snapshot" }
     maven { url "https://repo.spring.io/milestone" }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 apply plugin: 'java'
@@ -31,7 +33,8 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation('org.springframework.boot:spring-boot-starter-hateoas')
-    
+    implementation 'com.toedter:spring-hateoas-jsonapi:0.5.0-SNAPSHOT'
+
     compileOnly('org.projectlombok:lombok:1.18.6')
     annotationProcessor('org.projectlombok:lombok:1.18.6')
 
