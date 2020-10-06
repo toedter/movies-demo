@@ -42,8 +42,7 @@ public class DirectorController {
                 .map(director -> new DirectorRepresentationModel(director))
                 .collect(Collectors.toList());
 
-        Link selfLink = linkTo(DirectorController.class).slash("directors").withSelfRel();
-        Link templatedLink = new Link(selfLink.getHref() + "{?size,page}").withSelfRel();
+        Link selfLink = linkTo(DirectorController.class).slash("directors?page=" + page + "&size=" + size).withSelfRel();
 
         PagedModel.PageMetadata pageMetadata =
                 new PagedModel.PageMetadata(pagedResult.getSize(), pagedResult.getNumber(), pagedResult.getTotalElements(), pagedResult.getTotalPages());
@@ -53,23 +52,23 @@ public class DirectorController {
 
         final Pageable prev = pageRequest.previous();
         if (prev.getPageNumber() < page) {
-            Link prevLink = new Link(selfLink.getHref() + "?page=" + prev.getPageNumber() + "&size=" + prev.getPageSize()).withRel(IanaLinkRelations.PREV);
+            Link prevLink = Link.of(selfLink.getHref() + "?page=" + prev.getPageNumber() + "&size=" + prev.getPageSize()).withRel(IanaLinkRelations.PREV);
             pagedModel.add(prevLink);
         }
 
         final Pageable next = pageRequest.next();
         if (next.getPageNumber() > page && next.getPageNumber() < pagedResult.getTotalPages()) {
-            Link nextLink = new Link(selfLink.getHref() + "?page=" + next.getPageNumber() + "&size=" + next.getPageSize()).withRel(IanaLinkRelations.NEXT);
+            Link nextLink = Link.of(selfLink.getHref() + "?page=" + next.getPageNumber() + "&size=" + next.getPageSize()).withRel(IanaLinkRelations.NEXT);
             pagedModel.add(nextLink);
         }
 
         if (page > 0) {
-            Link firstLink = new Link(selfLink.getHref() + "?page=0&size=" + size).withRel(IanaLinkRelations.FIRST);
+            Link firstLink = Link.of(selfLink.getHref() + "?page=0&size=" + size).withRel(IanaLinkRelations.FIRST);
             pagedModel.add(firstLink);
         }
 
         if (page < pagedResult.getTotalPages() - 1) {
-            Link lastLink = new Link(selfLink.getHref() + "?page=" + (pagedResult.getTotalPages() - 1) + "&size=" + size).withRel(IanaLinkRelations.LAST);
+            Link lastLink = Link.of(selfLink.getHref() + "?page=" + (pagedResult.getTotalPages() - 1) + "&size=" + size).withRel(IanaLinkRelations.LAST);
             pagedModel.add(lastLink);
         }
 

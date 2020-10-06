@@ -15,7 +15,7 @@ class MovieModelAssembler {
         Link selfLink = linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel();
 
         Link moviesLink = linkTo(MovieController.class).slash("movies").withRel("movies");
-        Link templatedMoviesLink = new Link(moviesLink.getHref() + "{?size,page}").withRel("movies");
+        Link templatedMoviesLink = Link.of(moviesLink.getHref() + "{?size,page}").withRel("movies");
 
         final Affordance updateAffordance =
                 afford(methodOn(MovieController.class).updateMovie(movie, movie.getId()));

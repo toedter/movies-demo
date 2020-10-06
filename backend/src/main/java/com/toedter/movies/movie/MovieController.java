@@ -47,8 +47,7 @@ public class MovieController {
                         linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel()))
                 .collect(Collectors.toList());
 
-        Link selfLink = linkTo(MovieController.class).slash("movies").withSelfRel();
-        Link templatedLink = new Link(selfLink.getHref() + "{?size,page}").withSelfRel();
+        Link selfLink = linkTo(MovieController.class).slash("movies?page=" + page + "&size=" + size).withSelfRel();
 
         final Affordance newMovieAffordance =
                 afford(methodOn(MovieController.class).newMovie(null));
@@ -56,27 +55,27 @@ public class MovieController {
         PagedModel.PageMetadata pageMetadata =
                 new PagedModel.PageMetadata(pagedResult.getSize(), pagedResult.getNumber(), pagedResult.getTotalElements(), pagedResult.getTotalPages());
         final PagedModel<MovieRepresentationModel> entityModels =
-                new PagedModel<>(movieResources, pageMetadata, templatedLink.andAffordance(newMovieAffordance));
+                PagedModel.of(movieResources, pageMetadata, selfLink.andAffordance(newMovieAffordance));
 
         final Pageable prev = pageRequest.previous();
         if (prev.getPageNumber() < page) {
-            Link prevLink = new Link(selfLink.getHref() + "?page=" + prev.getPageNumber() + "&size=" + prev.getPageSize()).withRel(IanaLinkRelations.PREV);
+            Link prevLink = Link.of(selfLink.getHref() + "?page=" + prev.getPageNumber() + "&size=" + prev.getPageSize()).withRel(IanaLinkRelations.PREV);
             entityModels.add(prevLink);
         }
 
         final Pageable next = pageRequest.next();
         if (next.getPageNumber() > page && next.getPageNumber() < pagedResult.getTotalPages()) {
-            Link nextLink = new Link(selfLink.getHref() + "?page=" + next.getPageNumber() + "&size=" + next.getPageSize()).withRel(IanaLinkRelations.NEXT);
+            Link nextLink = Link.of(selfLink.getHref() + "?page=" + next.getPageNumber() + "&size=" + next.getPageSize()).withRel(IanaLinkRelations.NEXT);
             entityModels.add(nextLink);
         }
 
         if (page > 0) {
-            Link firstLink = new Link(selfLink.getHref() + "?page=0&size=" + size).withRel(IanaLinkRelations.FIRST);
+            Link firstLink = Link.of(selfLink.getHref() + "?page=0&size=" + size).withRel(IanaLinkRelations.FIRST);
             entityModels.add(firstLink);
         }
 
         if (page < pagedResult.getTotalPages() - 1) {
-            Link lastLink = new Link(selfLink.getHref() + "?page=" + (pagedResult.getTotalPages() - 1) + "&size=" + size).withRel(IanaLinkRelations.LAST);
+            Link lastLink = Link.of(selfLink.getHref() + "?page=" + (pagedResult.getTotalPages() - 1) + "&size=" + size).withRel(IanaLinkRelations.LAST);
             entityModels.add(lastLink);
         }
 
@@ -85,7 +84,7 @@ public class MovieController {
 
     @PostMapping("/movies")
     ResponseEntity<?> newMovie(@RequestBody Movie movie) {
-        Movie savedMovie = repository.save(movie);
+        repository.save(movie);
         MovieRepresentationModel movieRepresentationModel = movieModelAssembler.toModel(movie);
 
         return movieRepresentationModel
@@ -112,7 +111,7 @@ public class MovieController {
 
     private Link getMoviesLink() {
         Link moviesLink = linkTo(MovieController.class).slash("movies").withRel("movies");
-        return new Link(moviesLink.getHref() + "{?size,page}").withRel("movies");
+        return Link.of(moviesLink.getHref() + "{?size,page}").withRel("movies");
     }
 
     @PutMapping("/movies/{id}")
