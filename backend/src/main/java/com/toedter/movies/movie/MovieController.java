@@ -48,7 +48,7 @@ public class MovieController {
                 .collect(Collectors.toList());
 
         Link selfLink = linkTo(MovieController.class).slash("movies?page=" + page + "&size=" + size).withSelfRel();
-
+        Link baseLink = linkTo(MovieController.class).slash("movies").withSelfRel();
         final Affordance newMovieAffordance =
                 afford(methodOn(MovieController.class).newMovie(null));
 
@@ -59,23 +59,23 @@ public class MovieController {
 
         final Pageable prev = pageRequest.previous();
         if (prev.getPageNumber() < page) {
-            Link prevLink = Link.of(selfLink.getHref() + "?page=" + prev.getPageNumber() + "&size=" + prev.getPageSize()).withRel(IanaLinkRelations.PREV);
+            Link prevLink = Link.of(baseLink.getHref() + "?page=" + prev.getPageNumber() + "&size=" + prev.getPageSize()).withRel(IanaLinkRelations.PREV);
             entityModels.add(prevLink);
         }
 
         final Pageable next = pageRequest.next();
         if (next.getPageNumber() > page && next.getPageNumber() < pagedResult.getTotalPages()) {
-            Link nextLink = Link.of(selfLink.getHref() + "?page=" + next.getPageNumber() + "&size=" + next.getPageSize()).withRel(IanaLinkRelations.NEXT);
+            Link nextLink = Link.of(baseLink.getHref() + "?page=" + next.getPageNumber() + "&size=" + next.getPageSize()).withRel(IanaLinkRelations.NEXT);
             entityModels.add(nextLink);
         }
 
         if (page > 0) {
-            Link firstLink = Link.of(selfLink.getHref() + "?page=0&size=" + size).withRel(IanaLinkRelations.FIRST);
+            Link firstLink = Link.of(baseLink.getHref() + "?page=0&size=" + size).withRel(IanaLinkRelations.FIRST);
             entityModels.add(firstLink);
         }
 
         if (page < pagedResult.getTotalPages() - 1) {
-            Link lastLink = Link.of(selfLink.getHref() + "?page=" + (pagedResult.getTotalPages() - 1) + "&size=" + size).withRel(IanaLinkRelations.LAST);
+            Link lastLink = Link.of(baseLink.getHref() + "?page=" + (pagedResult.getTotalPages() - 1) + "&size=" + size).withRel(IanaLinkRelations.LAST);
             entityModels.add(lastLink);
         }
 
