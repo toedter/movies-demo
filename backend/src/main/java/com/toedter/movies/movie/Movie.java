@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.hateoas.server.core.Relation;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,9 @@ public class Movie {
     @Id @GeneratedValue @JsonIgnore
     private Long id;
 
+    @NotNull
     private String title;
+    @Pattern(regexp="\\d{4}$")
     private long year;
     private String imdbId;
     private double rating;
