@@ -11,7 +11,7 @@ This is work in progress, please stay tuned.
 
 == Getting Started
 
-* Make sure Java 8 JDK is installed
+* Make sure Java JDK >= 8 is installed
 * Open a terminal and invoke "./gradlew build bootrun" (just "gradlew" under Windows)
 * Open a Web browser at http://localhost:8080
 
