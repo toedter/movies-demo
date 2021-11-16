@@ -39,7 +39,7 @@ jobs:
       - name: Clone HAL Explorer
         run: ./gradlew cloneHalExplorer
       - name: Build HAL Explorer with Gradle
-        run: ./gradlew -p subprojects/hal-explorer build
+        run: ./gradlew -p hal-explorer build
 
       - name: Build Chatty with Gradle
         run: ./gradlew build createdockerfile
