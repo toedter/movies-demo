@@ -5,6 +5,7 @@ import com.toedter.movies.director.DirectorController;
 import lombok.Data;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Links;
 
 import java.util.Arrays;
 
@@ -14,7 +15,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Data
 public class MovieRepresentationModel extends EntityModel<Movie> {
      public MovieRepresentationModel(Movie movie) {
-        super(movie, linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel());
+        super(movie, Links.of(linkTo(methodOn(MovieController.class).findOne(movie.getId())).withSelfRel()));
         initializeDirectors(movie);
     }
 
